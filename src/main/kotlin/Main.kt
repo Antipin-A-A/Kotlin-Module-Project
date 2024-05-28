@@ -1,3 +1,6 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import Object.checkArchives
+
+fun main() {
+    println("Приложение Заметки")
+    checkArchives()
 }
