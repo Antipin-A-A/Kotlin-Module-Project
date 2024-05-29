@@ -38,10 +38,14 @@ object Object {
 
     fun createArchive() {
         println("Введите название архива ")
-        val string = readlnOrNull() ?: return createArchive()
-        val put = mutableArchive.put(mutableArchive.size + 1, Archive(string))
-        println("архив $string создана")
-        checkArchives()
+        val string = readlnOrNull()?: return checkArchives()
+        if (string.trim().isEmpty()) {
+            createArchive()
+        } else {
+            val put = mutableArchive.put(mutableArchive.size + 1, Archive(string))
+            println("архив $string создана")
+            checkArchives()
+        }
     }
 
     fun checkNotes(int : Int?) {
@@ -69,8 +73,10 @@ object Object {
         integer = int
         println("Введите название заметки")
         val string = readlnOrNull()
+        checkingString(string.toString())
         println("Введите текст заметки")
         val text = readlnOrNull()
+        checkingString(text.toString())
         val itn = mutableArchive[integer]?.map?.size
         println("Размер ${mutableArchive.values.size}")
         val put =
@@ -88,7 +94,7 @@ object Object {
         mutableArchive[integer]?.getNot().toString()
         println("Выберите пункт меню")
         menuFoNote()
-        val number = readln().toIntOrNull() ?: return println("введите значение")
+        val number = readln().toIntOrNull() ?: return readNote()
         when (number) {
             1 -> {
                 println("Выберите заметку")
@@ -107,6 +113,14 @@ object Object {
                 checkNotes(1)
             }
         }
+    }
+    fun checkingString(string: String): String {
+        return if (string.trim().isEmpty()) {
+            println("введите текст")
+            val string1 = readln()
+            checkingString(string1)
+        } else
+            string
     }
 }
 
