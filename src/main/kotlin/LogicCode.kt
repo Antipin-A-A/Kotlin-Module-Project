@@ -2,8 +2,7 @@ import kotlin.system.exitProcess
 
 object Object {
     private val mutableArchive = mutableMapOf<Int, Archive>()
-    private var integer : Int? = null
-
+    private var archiveNumber : Int? = null
     fun checkArchives() {
         println(" ")
         menuArchive()
@@ -18,14 +17,13 @@ object Object {
                     println(" ${i.key} - ${i.value.title}")
                 }
                 println("Выберите архив")
-                val number = readln().toIntOrNull() ?: return checkArchives()
-                if (number <= 0 || number > mutableArchive.size) {
+                val numberArchive = readln().toIntOrNull() ?: return checkArchives()
+                if (numberArchive <= 0 || numberArchive > mutableArchive.size) {
                     println("Такого номера нет")
                     checkArchives()
                 } else {
-                    checkNotes(number)
+                    checkNotes(numberArchive)
                 }
-
             }
 
             3 -> exitProcess(3)
@@ -38,7 +36,7 @@ object Object {
 
     fun createArchive() {
         println("Введите название архива ")
-        val string = readlnOrNull()?: return checkArchives()
+        val string = readlnOrNull() ?: return checkArchives()
         if (string.trim().isEmpty()) {
             createArchive()
         } else {
@@ -54,8 +52,9 @@ object Object {
         val n = readln().toIntOrNull() ?: return checkNotes(int)
         when (n) {
             1 -> createNote(int)
-            2 -> if (mutableArchive[integer]?.map?.isEmpty() == true) {
-                println("Заметки еще не созданы")
+            2 -> if (mutableArchive[int]!!.map.keys.isEmpty()) {// поправил
+                println("Заметок нет ")
+                println(" ")
                 checkNotes(int)
             } else {
                 readNote()
@@ -64,63 +63,66 @@ object Object {
             3 -> checkArchives()
             else -> {
                 println("Выберите пункт меню")
-                checkNotes(int)
+
             }
         }
     }
 
     fun createNote(int : Int?) {
-        integer = int
+        archiveNumber = int
         println("Введите название заметки")
         val string = readlnOrNull()
-        checkingString(string.toString())
+        val string1 = checkingString(string.toString())
         println("Введите текст заметки")
         val text = readlnOrNull()
-        checkingString(text.toString())
-        val itn = mutableArchive[integer]?.map?.size
-        println("Размер ${mutableArchive.values.size}")
+        val text1 = checkingString(text.toString())
+        val keyMapNumber = mutableArchive[archiveNumber]?.map?.size
         val put =
-                mutableArchive[integer]?.archiveAddMap(
-                    itn!!,
-                    Note(string.toString(), text.toString())
+                mutableArchive[archiveNumber]?.archiveAddMap(
+                    keyMapNumber!!,
+                    Note(string1, text1)
                 )
-        println("заметка $string добавлена в архив ${mutableArchive[int]!!.title}")
+        println("заметка $string1 добавлена в архив ${mutableArchive[int]!!.title}")
         checkNotes(int)
     }
 
     fun readNote() {
         println(" ")
-        println("Архив ${mutableArchive[integer]?.title}")
-        mutableArchive[integer]?.getNot().toString()
+        println("Архив ${mutableArchive[archiveNumber]?.title}")
+        mutableArchive[archiveNumber]?.getNot().toString()
+        println(" ")
         println("Выберите пункт меню")
         menuFoNote()
         val number = readln().toIntOrNull() ?: return readNote()
         when (number) {
             1 -> {
                 println("Выберите заметку")
-                mutableArchive[integer]?.getNot().toString()
-                val number = readln().toIntOrNull() ?: return readNote()
-                println("Заметка - ${mutableArchive[integer]?.map?.get(number - 1)?.title}")
-                println("Текст - ${mutableArchive[integer]?.map?.get(number - 1)?.content}")
-                Thread.sleep(5000)
+                mutableArchive[archiveNumber]?.getNot().toString()
+                val numberNote = readln().toIntOrNull() ?: return readNote()
+                println("Заметка - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.title}")
+                println("Текст - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.content}")
+                Thread.sleep(3000)
                 println(" ")
                 readNote()
             }
 
-            2 -> checkNotes(1)
+            2 -> checkNotes(archiveNumber)
             else -> {
                 println("Выберите пункт меню")
-                checkNotes(1)
+                checkNotes(archiveNumber)
             }
         }
     }
-    fun checkingString(string: String): String {
-        return if (string.trim().isEmpty()) {
-            println("введите текст")
+
+
+    tailrec fun checkingString(string : String) : String {
+        return if (string.trim().isNotEmpty()) {
+            string
+        } else {
+            println("Введите текст")
             val string1 = readln()
             checkingString(string1)
-        } else
-            string
+        }
     }
 }
 
