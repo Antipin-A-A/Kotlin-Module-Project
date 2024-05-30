@@ -28,14 +28,14 @@ object Object {
 
             3 -> exitProcess(3)
             else -> {
-                println("Выберите пункт меню -1")
+                println("Такого пункта нет")
                 checkArchives()
             }
         }
     }
 
     fun createArchive() {
-        println("Введите название архива ")
+        println("Введите название архива")
         val string = readlnOrNull() ?: return checkArchives()
         if (string.trim().isEmpty()) {
             createArchive()
@@ -53,7 +53,7 @@ object Object {
         when (n) {
             1 -> createNote(int)
             2 -> if (mutableArchive[int]!!.map.keys.isEmpty()) {// поправил
-                println("Заметок нет ")
+                println("Заметок нет")
                 println(" ")
                 checkNotes(int)
             } else {
@@ -62,8 +62,9 @@ object Object {
 
             3 -> checkArchives()
             else -> {
-                println("Выберите пункт меню")
-
+                println("Такого пункта нет")
+                println("")
+                checkNotes(int)
             }
         }
     }
@@ -99,17 +100,22 @@ object Object {
                 println("Выберите заметку")
                 mutableArchive[archiveNumber]?.getNot().toString()
                 val numberNote = readln().toIntOrNull() ?: return readNote()
-                println("Заметка - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.title}")
-                println("Текст - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.content}")
-                Thread.sleep(3000)
-                println(" ")
-                readNote()
+                if (numberNote <= 0 || numberNote > mutableArchive[archiveNumber]?.map?.keys?.size!!) {
+                    println("Такого номера нет")
+                    readNote()
+                } else {
+                    println("Заметка - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.title}")
+                    println("Текст - ${mutableArchive[archiveNumber]?.map?.get(numberNote - 1)?.content}")
+                    Thread.sleep(3000)
+                    println(" ")
+                    readNote()
+                }
             }
 
             2 -> checkNotes(archiveNumber)
             else -> {
-                println("Выберите пункт меню")
-                checkNotes(archiveNumber)
+                println("Такого пункта нет")
+                readNote()
             }
         }
     }
