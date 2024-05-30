@@ -97,8 +97,9 @@ object Object {
         val number = readln().toIntOrNull() ?: return readNote()
         when (number) {
             1 -> {
-                println("Выберите заметку")
+                println("Выберите номер заметки для прочтения")
                 mutableArchive[archiveNumber]?.getNot().toString()
+                println(":")
                 val numberNote = readln().toIntOrNull() ?: return readNote()
                 if (numberNote <= 0 || numberNote > mutableArchive[archiveNumber]?.map?.keys?.size!!) {
                     println("Такого номера нет")
