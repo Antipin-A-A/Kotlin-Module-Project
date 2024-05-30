@@ -15,6 +15,6 @@ import kotlin.system.exitProcess
     }
 
 fun menuFoNote() {
-    println("1. Прочитать заметку")
+    println("1. Выберите номер заметки для прочтения")
     println("2. вернуться в предыдущее меню")
 }
